@@ -1,18 +1,5 @@
 Q: select all users
 A: Sorry, there was an issue processing your query.
 
-Q: count all users
-A: Sorry, there was an issue processing your query.
 
-Q: select all users
-A: Sorry, there was an issue processing your query.
-
-Q: count all users
-A: Sorry, there was an issue processing your query.
-
-Q: count all users
-A: The generated SQL query is: Sorry, I couldn't get a response.
-
-Q: fetch all users 
-A: Sorry, there was an issue processing your query.
 
