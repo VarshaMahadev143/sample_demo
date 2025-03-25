@@ -1,0 +1,50 @@
+-- =============================================
+-- Author:		Balaji D
+-- Create date: 24-08-2021
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [RPP].[getStudentAssignedCount]
+AS
+BEGIN
+	SET NOCOUNT ON
+		DECLARE
+			--Variables for capturing error
+			@ErrorLine BIGINT,
+			@ErrorMessage NVARCHAR(4000),
+			@SchemaName VARCHAR(500),
+			@ErrorProcedure NVARCHAR(500),
+			@ErrorSeverity BIGINT,
+			@ErrorState BIGINT,
+			@SPID BIGINT,
+			@ServerName NVARCHAR(500),
+			@ServiceName NVARCHAR(500),
+			@HostName NVARCHAR(500),
+			@ProgramName NVARCHAR(1000),
+			@CommandLine NVARCHAR(4000),
+			@LoginUser NVARCHAR(50)
+		
+		BEGIN TRY
+			
+	SET NOCOUNT ON
+		
+			SELECT StudentCountSet FROM RPT.tblStudentCountConfig where isdeleted=0
+
+	END TRY
+		BEGIN CATCH
+			--Capturing Error
+			SELECT
+				@ErrorLine = ERROR_LINE(),@ErrorMessage = ERROR_MESSAGE(),@SchemaName = 'RPP',
+				@ErrorProcedure = ERROR_PROCEDURE(),@ErrorSeverity = ERROR_SEVERITY(),
+				@ErrorState = ERROR_STATE(),@SPID = @@SPID,@ServerName = @@SERVERNAME,
+				@ServiceName = @@SERVICENAME,@HostName = HOST_NAME(),@ProgramName = PROGRAM_NAME(),
+				@CommandLine = '''EXECUTE [RPP].[getStudentAssignedCount]'+',''',
+				@LoginUser = SUSER_SNAME()
+			
+			EXECUTE dbo.uspCaptureError @ErrorLine,@ErrorMessage,@SchemaName,@ErrorProcedure,@ErrorSeverity,
+			@ErrorState,@SPID,@ServerName,@ServiceName,@HostName,@ProgramName,@CommandLine,@LoginUser
+
+			SELECT ERROR_MESSAGE() AS ErrorMessage, ERROR_LINE() AS ErrorLine
+		END CATCH
+	SET NOCOUNT OFF
+END
+GO
